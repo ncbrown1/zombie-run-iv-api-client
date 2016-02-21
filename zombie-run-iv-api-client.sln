@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zombie-run-iv-api-client", "zombie-run-iv-api-client\zombie-run-iv-api-client.csproj", "{4E9AAC56-F104-4746-B965-8270ADF1A12B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E9AAC56-F104-4746-B965-8270ADF1A12B}.Debug|x86.ActiveCfg = Debug|x86
+		{4E9AAC56-F104-4746-B965-8270ADF1A12B}.Debug|x86.Build.0 = Debug|x86
+		{4E9AAC56-F104-4746-B965-8270ADF1A12B}.Release|x86.ActiveCfg = Release|x86
+		{4E9AAC56-F104-4746-B965-8270ADF1A12B}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+EndGlobal
