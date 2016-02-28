@@ -107,6 +107,18 @@ namespace zombierunivapiclient
 				return -1;
 			}
 		}
+
+		public static bool saveHiFives(int pid, int hifives) {
+			string endpoint = api + "/players/"+pid+"/hifives?hifives="+hifives;
+		}
+
+		public static bool saveCharacters(int pid, int characters) {
+			string endpoint = api + "/players/"+pid+"/characters?characters="+characters;
+		}
+
+		public static bool savePowerupLvl(int pid, int powerup_lvl) {
+			string endpoint = api + "/players/"+pid+"/powerup_lvl?powerup_lvl="+powerup_lvl;
+		}
 	}
 }
 
