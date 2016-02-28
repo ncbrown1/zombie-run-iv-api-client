@@ -110,14 +110,29 @@ namespace zombierunivapiclient
 
 		public static bool saveHiFives(int pid, int hifives) {
 			string endpoint = api + "/players/"+pid+"/hifives?hifives="+hifives;
+			HttpWebRequest req = (HttpWebRequest)WebRequest.Create (endpoint);
+			req.Method = "POST";
+			HttpWebResponse resp = (HttpWebResponse)req.GetResponse ();
+
+			return resp.StatusCode == HttpStatusCode.OK;
 		}
 
 		public static bool saveCharacters(int pid, int characters) {
 			string endpoint = api + "/players/"+pid+"/characters?characters="+characters;
+			HttpWebRequest req = (HttpWebRequest)WebRequest.Create (endpoint);
+			req.Method = "POST";
+			HttpWebResponse resp = (HttpWebResponse)req.GetResponse ();
+
+			return resp.StatusCode == HttpStatusCode.OK;
 		}
 
 		public static bool savePowerupLvl(int pid, int powerup_lvl) {
 			string endpoint = api + "/players/"+pid+"/powerup_lvl?powerup_lvl="+powerup_lvl;
+			HttpWebRequest req = (HttpWebRequest)WebRequest.Create (endpoint);
+			req.Method = "POST";
+			HttpWebResponse resp = (HttpWebResponse)req.GetResponse ();
+
+			return resp.StatusCode == HttpStatusCode.OK;
 		}
 	}
 }
