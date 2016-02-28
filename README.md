@@ -33,15 +33,73 @@ The usage as thought out when developing this library is as follows:
     * `string URL` - the URL the API is running on
 
   * Methods: (all statically called, i.e. `ApiClient.getPlayer("nick")`)
-    * `Player getPlayer(string name)` - gets or creates a Player object corresponding to `name` and the current device's `Util.getDeviceID()` value from the API
-    * `List<Score> getScores()` - returns a list of high scores from the API server
-    * `List<Score> getScores(string name)` - returns a list of high scores earned by player with name `name` on current device from the API server
-    * `List<Score> getScores(Player player)` - returns a list of high scores earned by player `player` from API server
-    * `int newScore(int score, string name)` - sends a new score to the API server, which adds the score to the database and returns the rank of the new score
-    * `int newScore(Score score)` - same as above, but with a Score object
-    * `bool saveHiFives(int pid, int val)` - Updates the `hifive_count` value of the player with id `pid` on the API server, and returns true if successful, false otherwise
-    * `bool saveCharacters(int pid, int val)` - Updates the `characters` value of the player with id `pid` on the API server, and returns true if successful, false otherwise
-    * `bool savePowerupLvl(int pid, int val)` - Updates the `powerup_lvl` value of the player with id `pid` on the API server, and returns true if successful, false otherwise
+    * `Player getPlayer(string name)`
+      * Preconditions:
+        * `name` is some defined string
+        * `Util.getDeviceID()` has been defined to return a device UUID
+        * The zombie-run-iv-api is online and referenced in `ApiClient`
+      * Postconditions:
+        * If a player with `name` on the current device already exists, that player is returned; otherwise the player is created and sent to the API
+        * A Player class object corresponding to the database record is returned
+    * `List<Score> getScores()`
+      * Preconditions:
+        * zombie-run-iv-api is online and referenced in `ApiClient`
+      * Postconditions:
+        * returns a list of high scores from the API server
+    * `List<Score> getScores(string name)`:
+      * Preconditions:
+        * `name` is some defined string
+        * `Util.getDeviceID()` has been defined to return a device UUID
+        * zombie-run-iv-api is online and referenced in `ApiClient`
+      * Postconditions:
+        * returns a list of high scores earned by player with name `name` on current device from the API server
+    * `List<Score> getScores(Player player)`:
+      * Preconditions:
+        * `player` is some defined Player object
+        * `Util.getDeviceID()` has been defined to return a device UUID
+        * zombie-run-iv-api is online and referenced in `ApiClient`
+      * Postconditions:
+        * returns a list of high scores earned by player `player` from API server
+    * `int newScore(int score, string name)`:
+      * Preconditions:
+        * `name` is some defined string
+        * `Util.getDeviceID()` has been defined to return a device UUID
+        * zombie-run-iv-api is online and referenced in `ApiClient`
+      * Postconditions:
+        * A new score corresponding to the parameters has been created on the API server
+        * Returns the rank of the new score
+    * `int newScore(Score score)`:
+      * Preconditions:
+        * `score` is some defined Score object
+        * `Util.getDeviceID()` has been defined to return a device UUID
+        * zombie-run-iv-api is online and referenced in `ApiClient`
+      * Postconditions:
+        * A new score corresponding to the parameter has been created on the API server
+        * Returns the rank of the new score
+    * `bool saveHiFives(int pid, int val)`:
+      * Preconditions:
+        * `pid` corresponds to an existing Player on the API server
+        * `Util.getDeviceID()` has been defined to return a device UUID
+        * zombie-run-iv-api is online and referenced in `ApiClient`
+      * Postconditions:
+        * The `hifive_count` field of the player has been updated on the API server and database
+        * Returns a boolean of whether the operation was a success
+    * `bool saveCharacters(int pid, int val)`:
+      * Preconditions:
+        * `pid` corresponds to an existing Player on the API server
+        * `Util.getDeviceID()` has been defined to return a device UUID
+        * zombie-run-iv-api is online and referenced in `ApiClient`
+      * Postconditions:
+        * The `characters` field of the player has been updated on the API server and database
+        * Returns a boolean of whether the operation was a success
+    * `bool savePowerupLvl(int pid, int val)`:
+      * Preconditions:
+        * `pid` corresponds to an existing Player on the API server
+        * `Util.getDeviceID()` has been defined to return a device UUID
+        * zombie-run-iv-api is online and referenced in `ApiClient`
+      * Postconditions:
+        * The `powerup_lvl` field of the player has been updated on the API server and database
+        * Returns a boolean of whether the operation was a success
 
 #### Player
 
@@ -56,21 +114,53 @@ The Player class corresponds to an individual `player` object from the API and i
     * `int powerup_lvl` - the powerup level this player has reached
 
   * Methods:
-    * `Player (int id, string name, int hifive_count, int characters, int powerup_lvl)` - constructor
-    * `int getID()` - returns the player's `id` field value
-    * `string getName()` - returns the player's `name` field value
-    * `string getDeviceID()` - returns the player's `device_id` field value
-    * `int getHiFives()` - returns the player's `hifive_count` field value
-    * `void setHiFives(int val)` - sets the player's `hifive_count` field to `val`
-    * `void saveHiFives()` - uploads the player's `hifive_count` value to the server for persistence
-    * `int getCharacters()` - returns the player's `characters` field value
-    * `void setCharacters(int val)` - sets the player's `characters` field to `val`
-    * `void saveCharacters()` - uploads the player's `characters` value to the server for persistence
-    * `int getPowerupLvl()` - returns the player's `powerup_lvl` field value
-    * `void setPowerupLvl(int val)` - sets the player's `powerup_lvl` field to `val`
-    * `void savePowerupLvl()` - uploads the player's `powerup_lvl` value to the server for persistence
-    * `List<Score> getScores()` - gets the list of scores achieved by this player
-    * `int addScore(int score)` - adds the new score to the API and its database, and returns the rank of the new score
+    * `Player (int id, string name, int hifive_count, int characters, int powerup_lvl)`:
+      * Preconditions: None
+      * Postconditions: an object instance of `Player` is returned
+    * `int getID()`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the `id` attribute value is returned
+    * `string getName()`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the `name` attribute value is returned
+    * `string getDeviceID()`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the `device_id` attribute value is returned
+    * `int getHiFives()`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the `hifive_count` attribute value is returned
+    * `void setHiFives(int val)`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the `hifive_count` attribute value is updated to be `val`
+    * `void saveHiFives()`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the API server's database has been updated to reflect the current `hifive_count` value
+    * `int getCharacters()`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the `characters` attribute value is returned
+    * `void setCharacters(int val)`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the `characters` attribute value is updated to be `val`
+    * `void saveCharacters()`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the API server's database has been updated to reflect the current `characters` value
+    * `int getPowerupLvl()`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the `powerup_lvl` attribute value is returned
+    * `void setPowerupLvl(int val)`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the `powerup_lvl` attribute value is updated to be `val`
+    * `void savePowerupLvl()`
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: the API server's database has been updated to reflect the current `powerup_lvl` value
+    * `List<Score> getScores()`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: returns a list of all the scores achieved by the player record this object refers to
+    * `int addScore(int score)`:
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions:
+        * A new score corresponding to the parameter has been created on the API server
+        * The rank of the new score is returned
 
 #### Score
   * Fields:
@@ -79,8 +169,12 @@ The Player class corresponds to an individual `player` object from the API and i
     * `DateTime time` - the time at which this score was created
 
   * Methods:
-    * `Score (int score, string name, string time)` - constructor
+    * `Score (int score, string name, string time)`:
+      * Preconditions: None
+      * Postconditions: an object instance of `Score` is returned
     * `string toJson()` - returns the json representation of this score
+      * Preconditions: the calling object has been properly instantiated
+      * Postconditions: a string is returned which represents this object in JSON format
 
 ## License
 Licensed under the [MIT License](https://opensource.org/licenses/MIT).
