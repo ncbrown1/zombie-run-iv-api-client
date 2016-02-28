@@ -14,7 +14,7 @@ namespace zombierunivapiclient
 			{
 			    Console.WriteLine(score);
 			}
-
+			Console.WriteLine(ApiClient.newScore (200, "nick"));
 			Console.WriteLine (Util.getDeviceID ());
 			Console.WriteLine ("Hello World!");
 		}

@@ -9,7 +9,8 @@ namespace zombierunivapiclient
 {
 	public class ApiClient
 	{
-		static string api = "https://zombie-run-iv.herokuapp.com";
+//		static string api = "https://zombie-run-iv.herokuapp.com";
+		static string api = "http://localhost:5000";
 
 		public static Player getPlayer(string name) {
 			Player player = null;
@@ -59,12 +60,15 @@ namespace zombierunivapiclient
 
 		public static List<Score> getScores(string name) {
 			Player player = ApiClient.getPlayer (name);
+			return ApiClient.getScores (player);
+		}
+
+		public static List<Score> getScores(Player player) {
+			List<Score> scores;
 			if (player == null) {
 				Console.WriteLine ("Not Found");
 				return new List<Score> ();
 			}
-
-			List<Score> scores;
 
 			WebClient client = new WebClient();
 			string scores_json = client.DownloadString(api + "/players/" + player.getID() + "/scores");
@@ -79,21 +83,29 @@ namespace zombierunivapiclient
 			return scores;
 		}
 
-		public static bool newScore(Score score)
+		public static int newScore(int score, string name)
 		{
-			Player player = null;
-			string endpoint = api + "/scores?name=" + name + "&device_id=" + Util.getDeviceID ();
+			Score s = new Score(score, name, null);
+			return ApiClient.newScore(s);
+		}
+
+		public static int newScore(Score score)
+		{
+			string endpoint = api + "/scores?name=" + score.name +
+			                  "&device_id=" + Util.getDeviceID () +
+			                  "&score=" + score.score;
 			HttpWebRequest req = (HttpWebRequest)WebRequest.Create (endpoint);
 			req.Method = "POST";
 			HttpWebResponse resp = (HttpWebResponse)req.GetResponse ();
 
-			return resp.StatusCode == HttpStatusCode.OK;
-		}
+			string data = new StreamReader (resp.GetResponseStream ()).ReadToEnd ();
+			JObject jdata = JObject.Parse (data);
 
-		public static void newScore(int score, string name)
-		{
-			Score s = new Score(score, name, null);
-			return ApiClient.newScore(s);
+			if (resp.StatusCode == HttpStatusCode.OK) {
+				return (int)jdata ["rank"];
+			} else {
+				return -1;
+			}
 		}
 	}
 }
